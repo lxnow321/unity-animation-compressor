@@ -82,11 +82,11 @@ namespace AnimationCompressor
 
                     // In
                     newKey.inTangent = curKey.inTangent;
-                    newKey.inWeight = curKey.inWeight;
+                    // newKey.inWeight = curKey.inWeight;
 
                     // Out
                     newKey.outTangent = nextKey.outTangent;
-                    newKey.outWeight = nextKey.outWeight;
+                    // newKey.outWeight = nextKey.outWeight;
                 }
             }
 

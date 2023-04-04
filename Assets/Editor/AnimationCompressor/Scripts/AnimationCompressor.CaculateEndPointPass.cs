@@ -66,7 +66,7 @@ namespace AnimationCompressor
                     var newKey = new Keyframe();
                     newKey.value = compSampleValue + rawOffset;
                     newKey.time = tick;
-                    newKey.inWeight = newKey.outWeight = 1 / 3f;
+                    // newKey.inWeight = newKey.outWeight = 1 / 3f;
                     compressCurve.AddKey(newKey);
                 }
 

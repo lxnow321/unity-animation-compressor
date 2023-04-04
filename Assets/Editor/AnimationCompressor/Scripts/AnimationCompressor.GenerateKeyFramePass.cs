@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace AnimationCompressor
 {
@@ -9,11 +10,17 @@ namespace AnimationCompressor
         {
             var curveBindings = AnimationUtility.GetCurveBindings(originClip);
 
+            Debug.LogError("=====" + curveBindings.Length);
+
+
+            var recordNameDict = new Dictionary<string, int>();
             foreach (var curveBinding in curveBindings)
             {
                 var isTansformCurve = Util.IsTransformKey(curveBinding.propertyName);
                 var originCurve = AnimationUtility.GetEditorCurve(originClip, curveBinding);
                 var compressCurve = AnimationUtility.GetEditorCurve(originClip, curveBinding);      // copy curve
+
+                Debug.LogError(string.Format("---{0} {1} {2}", curveBinding.path, curveBinding.propertyName, originCurve.keys.Length));
 
                 // Only working on transform keys
                 if (isTansformCurve)
@@ -24,6 +31,18 @@ namespace AnimationCompressor
                 }
 
                 compressClip.SetCurve(curveBinding.path, curveBinding.type, curveBinding.propertyName, compressCurve);
+
+
+                if (!recordNameDict.ContainsKey(curveBinding.propertyName))
+                {
+                    recordNameDict[curveBinding.propertyName] = 0;
+                }
+                recordNameDict[curveBinding.propertyName]+=compressCurve.keys.Length;
+            }
+
+            foreach(var item in recordNameDict)
+            {
+                Debug.LogError("记录: " + item.Key + " " + item.Value);
             }
         }
 
@@ -47,11 +66,13 @@ namespace AnimationCompressor
             if (originCurve.keys.Length <= 2)
                 return;
 
+
+            //格拉斯-普克算法 也叫 迭代端点拟合算法
             var itrCount = 0f;
             while (true)
             {
                 var tick = 0f;
-                var time = originCurve.keys[originCurve.keys.Length - 1].time;
+                // var time = originCurve.keys[originCurve.keys.Length - 1].time;  好像没啥用
 
                 var highestOffset = -1f;
                 Keyframe highestKey = new Keyframe();

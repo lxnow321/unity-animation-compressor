@@ -6,7 +6,7 @@ namespace AnimationCompressor
 {
     public class Menu
     {
-        [MenuItem("Assets/Optimization/Animation/Compress Animation Clip")]
+        [MenuItem("测试/压缩AnimationClip")]
         public static void CompressSelectedAnimationClips()
         {
             var clips = new List<AnimationClip>();
@@ -31,7 +31,7 @@ namespace AnimationCompressor
                 core.Compress(clip, option);
         }
 
-        [MenuItem("Tools/Optimization/Animation/Animation Compressor/Open")]
+        [MenuItem("测试/打开Animation Compressor")]
         public static void OpenMaterialRefCleaner()
         {
             ShowWindow();
